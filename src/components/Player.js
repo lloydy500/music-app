@@ -1,4 +1,4 @@
-import React, {usestate, useRef, useEffect} from React;
+import React, {useState, useRef, useEffect} from 'react';
 import PlayerDetails from './PlayerDetails';
 import PlayerControls from './PlayerControls';
 
@@ -16,13 +16,13 @@ function Player(props) {
 
     // One funtion for skipping forwards or backwards
     // where (forwards = true is the default parameter)
-    const SkipSong = (forwards = true) => {
+    const skipSong = (forwards = true) => {
         if (forwards) {
             props.setCurrentSongIndex(() => {
                 let temp = props.currentSongIndex;
                 temp++;
 
-                if (temp> props.songs.length - 1) {
+                if (temp > props.songs.length - 1) {
                     temp = 0;
                 }
 
@@ -41,13 +41,22 @@ function Player(props) {
                 });
             }
         }
-
     return (
         <div className="c-player">
-            <audio>ref={audioEl}</audio>
-            <PlayerDetails song={props.song} />
-            <PlayerControls />
-            <p><strong>Next up:</strong> {props.nextSong.title} by {props.nextSong.artist} </p>
+            <audio src={props.songs[props.currentSongIndex].src} ref={audioEl}></audio>
+            <PlayerDetails
+                song={props.songs[props.currentSongIndex]}
+            />
+            <PlayerControls
+                isPlaying={isPlaying}
+                setIsPlaying={setIsPlaying}
+                skipSong={skipSong}
+            />
+            <p>
+            <strong>Next up:</strong>
+            {props.songs[props.nextSongIndex].title} by
+            {props.songs[props.nextSongIndex.artist]}
+            </p>
         </div>
     )
 }
